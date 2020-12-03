@@ -4,7 +4,7 @@ use std::error::Error;
 #[allow(dead_code)]
 fn find_pair(numbers: &Vec<u32>, target: u32) -> Result<(u32, u32), Box<dyn Error>> {
     for number in numbers.into_iter() {
-        if numbers.contains(&(2020 - number)) {
+        if numbers.contains(&(target - number)) {
             return Ok((number.to_owned(), target - number));
         }
     }
