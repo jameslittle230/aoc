@@ -1,10 +1,7 @@
-use std::{
-    error::Error,
-    io::{self, Read},
-    process::exit,
-};
+use super::AOCOutput;
+use std::error::Error;
 
-#[allow(dead_code)] 
+#[allow(dead_code)]
 fn find_pair(numbers: &Vec<u32>, target: u32) -> Result<(u32, u32), Box<dyn Error>> {
     for number in numbers.into_iter() {
         if numbers.contains(&(2020 - number)) {
@@ -15,7 +12,7 @@ fn find_pair(numbers: &Vec<u32>, target: u32) -> Result<(u32, u32), Box<dyn Erro
     Err(From::from("No pair"))
 }
 
-#[allow(dead_code)] 
+#[allow(dead_code)]
 fn find_triplet(numbers: &Vec<u32>, target: u32) -> Result<(u32, u32, u32), Box<dyn Error>> {
     for number in numbers.into_iter() {
         if let Ok(pair) = find_pair(numbers, target - number) {
@@ -69,10 +66,7 @@ fn find_n_entries_summing_to(
     }
 }
 
-pub fn main() {
-    let mut buffer = String::new();
-    io::stdin().read_to_string(&mut buffer).unwrap();
-
+pub fn main(buffer: &String) -> Result<AOCOutput, Box<dyn Error>> {
     let mut numbers: Vec<u32> = buffer
         .split('\n')
         .into_iter()
@@ -87,7 +81,7 @@ pub fn main() {
         product *= entry;
     }
 
-    eprintln!(
+    let stderr = format!(
         "{} = {}",
         &entries
             .into_iter()
@@ -97,7 +91,7 @@ pub fn main() {
         product
     );
 
-    println!("{}", product);
+    let stdout = format!("{}", product);
 
-    exit(0)
+    Ok(AOCOutput { stderr, stdout })
 }

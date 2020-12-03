@@ -1,9 +1,5 @@
-use std::{
-    convert::TryFrom,
-    convert::TryInto,
-    error::Error,
-    io::{self, Read},
-};
+use super::AOCOutput;
+use std::{convert::TryFrom, convert::TryInto, error::Error};
 
 struct PasswordPolicy {
     letter: char,
@@ -55,7 +51,7 @@ impl TryFrom<String> for Password {
 }
 
 impl Password {
-    #[allow(dead_code)] 
+    #[allow(dead_code)]
     fn is_valid_for_sled_shop(&self) -> bool {
         let policy_letter_count = self
             .password
@@ -82,10 +78,7 @@ impl Password {
     }
 }
 
-pub fn main() {
-    let mut buffer = String::new();
-    io::stdin().read_to_string(&mut buffer).unwrap();
-
+pub fn main(buffer: &String) -> Result<AOCOutput, Box<dyn Error>> {
     let count: u32 = buffer
         .split('\n')
         .into_iter()
@@ -97,10 +90,13 @@ pub fn main() {
         .map(|bool| u32::from(bool))
         .sum::<u32>();
 
-    eprintln!(
+    let stderr = format!(
         "{} out of {}",
         count,
         buffer.split("\n").collect::<Vec<&str>>().len()
     );
-    println!("{}", count)
+
+    let stdout = format!("{}", count);
+
+    Ok(AOCOutput { stderr, stdout })
 }
