@@ -1,6 +1,4 @@
-use crate::Variant;
-
-use super::AOCOutput;
+use crate::{AOCOutput, Variant};
 use std::error::Error;
 
 /**
