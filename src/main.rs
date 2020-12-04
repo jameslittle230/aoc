@@ -9,6 +9,7 @@ use std::{
 pub mod day1;
 pub mod day2;
 pub mod day3;
+pub mod day4;
 
 pub struct AOCOutput {
     stderr: String,
@@ -44,6 +45,7 @@ fn main() {
         "1" => execute_puzzle("./inputs/1.txt", day1::main, variant),
         "2" => execute_puzzle("./inputs/2.txt", day2::main, variant),
         "3" => execute_puzzle("./inputs/3.txt", day3::main, variant),
+        "4" => execute_puzzle("./inputs/4.txt", day4::main, variant),
         _ => {
             eprintln!("Day `{}` not recognized", day);
             exit(1);
