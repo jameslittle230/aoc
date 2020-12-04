@@ -1,4 +1,4 @@
-use super::AOCOutput;
+use crate::{AOCOutput, Variant};
 use std::{convert::TryFrom, convert::TryInto, error::Error};
 
 struct PasswordPolicy {
@@ -51,7 +51,6 @@ impl TryFrom<String> for Password {
 }
 
 impl Password {
-    #[allow(dead_code)]
     fn is_valid_for_sled_shop(&self) -> bool {
         let policy_letter_count = self
             .password
@@ -78,14 +77,20 @@ impl Password {
     }
 }
 
-pub fn main(buffer: &String) -> Result<AOCOutput, Box<dyn Error>> {
+pub fn main(buffer: &String, variant: Variant) -> Result<AOCOutput, Box<dyn Error>> {
     let count: u32 = buffer
         .split('\n')
         .into_iter()
+        
         // map to password
         .map(|str| str.trim().to_string().try_into().unwrap())
+       
         // validate password
-        .map(|pw: Password| pw.is_valid_for_toboggan())
+        .map(|pw: Password| match variant {
+            Variant::One => pw.is_valid_for_sled_shop(),
+            Variant::Two => pw.is_valid_for_toboggan(),
+        })
+      
         // map to 1 or 0 to allow for sum
         .map(|bool| u32::from(bool))
         .sum::<u32>();

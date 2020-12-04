@@ -1,27 +1,7 @@
+use crate::Variant;
+
 use super::AOCOutput;
 use std::error::Error;
-
-#[allow(dead_code)]
-fn find_pair(numbers: &Vec<u32>, target: u32) -> Result<(u32, u32), Box<dyn Error>> {
-    for number in numbers.into_iter() {
-        if numbers.contains(&(2020 - number)) {
-            return Ok((number.to_owned(), target - number));
-        }
-    }
-
-    Err(From::from("No pair"))
-}
-
-#[allow(dead_code)]
-fn find_triplet(numbers: &Vec<u32>, target: u32) -> Result<(u32, u32, u32), Box<dyn Error>> {
-    for number in numbers.into_iter() {
-        if let Ok(pair) = find_pair(numbers, target - number) {
-            return Ok((number.to_owned(), pair.0, pair.1));
-        }
-    }
-
-    Err(From::from("No triplet"))
-}
 
 fn find_n_entries_summing_to(
     numbers: &Vec<u32>,
@@ -66,7 +46,7 @@ fn find_n_entries_summing_to(
     }
 }
 
-pub fn main(buffer: &String) -> Result<AOCOutput, Box<dyn Error>> {
+pub fn main(buffer: &String, variant: Variant) -> Result<AOCOutput, Box<dyn Error>> {
     let mut numbers: Vec<u32> = buffer
         .split('\n')
         .into_iter()
@@ -75,7 +55,12 @@ pub fn main(buffer: &String) -> Result<AOCOutput, Box<dyn Error>> {
 
     &numbers.sort();
 
-    let entries = find_n_entries_summing_to(&numbers, 3, 2020).unwrap();
+    let n = match variant {
+        Variant::One => 2,
+        Variant::Two => 3
+    };
+
+    let entries = find_n_entries_summing_to(&numbers, n, 2020).unwrap();
     let mut product = 1;
     for entry in &entries {
         product *= entry;
