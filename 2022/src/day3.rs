@@ -13,42 +13,58 @@ fn get_item_score(item: &char) -> u32 {
     panic!()
 }
 
-pub(crate) fn exec(_part: &Part) -> u32 {
+pub(crate) fn exec(part: &Part) -> u32 {
     let contents = include_str!("../inputs/3.txt");
+    let lines = contents.split('\n');
 
-    contents
-        .split('\n')
-        .into_iter()
-        .map(|rucksack_contents_str| -> u32 {
-            let rucksack_contents = rucksack_contents_str.chars().collect_vec();
+    match part {
+        Part::One => lines
+            .map(|rucksack_contents_str| -> u32 {
+                let rucksack_contents = rucksack_contents_str.chars().collect_vec();
 
-            let (a, b) = rucksack_contents.split_at(rucksack_contents.len() / 2);
-            let mut compt_a: HashSet<&char> = HashSet::new();
-            let mut compt_b: HashSet<&char> = HashSet::new();
+                let (a, b) = rucksack_contents.split_at(rucksack_contents.len() / 2);
+                let compt_a: HashSet<char> = HashSet::from_iter(a.iter().cloned());
+                let compt_b: HashSet<char> = HashSet::from_iter(b.iter().cloned());
 
-            for item in a {
-                compt_a.insert(item);
-            }
-            for item in b {
-                compt_b.insert(item);
-            }
+                let intersection = compt_a.intersection(&compt_b).collect_vec();
+                intersection.iter().map(|item| get_item_score(item)).sum()
+            })
+            .sum(),
 
-            let intersection = compt_a.intersection(&compt_b).collect_vec();
-            intersection.iter().map(|item| get_item_score(item)).sum()
-        })
-        .sum()
+        Part::Two => lines
+            .collect_vec()
+            .chunks(3)
+            .map(|elf_group| -> u32 {
+                let a: HashSet<char> = HashSet::from_iter(elf_group[0].chars());
+                let b: HashSet<char> = HashSet::from_iter(elf_group[1].chars());
+                let c: HashSet<char> = HashSet::from_iter(elf_group[2].chars());
+
+                HashSet::from_iter(a.intersection(&b).cloned())
+                    .intersection(&c)
+                    .map(get_item_score)
+                    .sum()
+            })
+            .sum(),
+    }
 }
 
 #[cfg(test)]
 mod tests {
 
-    use super::get_item_score;
+    use super::{exec, get_item_score};
+    use crate::Part;
 
     #[test]
-    fn it_works() {
+    fn get_item_score_test() {
         assert_eq!(get_item_score(&'a'), 1);
         assert_eq!(get_item_score(&'z'), 26);
         assert_eq!(get_item_score(&'A'), 27);
         assert_eq!(get_item_score(&'Z'), 52);
+    }
+
+    #[test]
+    fn it_works() {
+        assert_eq!(exec(&Part::One), 7746);
+        assert_eq!(exec(&Part::Two), 2604)
     }
 }

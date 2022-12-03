@@ -5,7 +5,7 @@ use crate::Part;
 pub(crate) fn exec(part: &Part) -> u32 {
     let contents = include_str!("../inputs/1.txt");
 
-    let mut elf_inventories: Vec<u32> = contents
+    contents
         .split("\n\n")
         .into_iter()
         .map(|elf_inventory| -> u32 {
@@ -15,14 +15,23 @@ pub(crate) fn exec(part: &Part) -> u32 {
                 .map(|food_cal_value| food_cal_value.parse::<u32>().expect(""))
                 .sum()
         })
-        .collect_vec();
+        .sorted()
+        .rev()
+        .take(match part {
+            Part::One => 1,
+            Part::Two => 3,
+        })
+        .sum()
+}
 
-    match part {
-        Part::One => elf_inventories.into_iter().max().expect(""),
-        Part::Two => {
-            elf_inventories.sort();
-            elf_inventories.reverse();
-            elf_inventories.into_iter().take(3).sum()
-        }
+#[cfg(test)]
+mod tests {
+    use super::exec;
+    use crate::Part;
+
+    #[test]
+    fn it_works() {
+        assert_eq!(exec(&Part::One), 66186);
+        assert_eq!(exec(&Part::Two), 196804);
     }
 }
