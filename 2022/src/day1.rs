@@ -1,10 +1,9 @@
-use std::fs;
+use itertools::Itertools;
 
 pub(crate) fn exec() -> u32 {
-    let file_path = "./inputs/1.txt";
-    let contents = fs::read_to_string(file_path).expect("couldn't read");
+    let contents = include_str!("../inputs/1.txt");
 
-    contents
+    let mut elf_inventories: Vec<u32> = contents
         .split("\n\n")
         .into_iter()
         .map(|elf_inventory| -> u32 {
@@ -14,6 +13,9 @@ pub(crate) fn exec() -> u32 {
                 .map(|food_cal_value| food_cal_value.parse::<u32>().expect(""))
                 .sum()
         })
-        .max()
-        .expect("")
+        .collect_vec();
+
+    elf_inventories.sort();
+    elf_inventories.reverse();
+    elf_inventories.into_iter().take(3).sum()
 }
