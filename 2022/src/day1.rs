@@ -1,6 +1,8 @@
 use itertools::Itertools;
 
-pub(crate) fn exec() -> u32 {
+use crate::Part;
+
+pub(crate) fn exec(part: &Part) -> u32 {
     let contents = include_str!("../inputs/1.txt");
 
     let mut elf_inventories: Vec<u32> = contents
@@ -15,7 +17,12 @@ pub(crate) fn exec() -> u32 {
         })
         .collect_vec();
 
-    elf_inventories.sort();
-    elf_inventories.reverse();
-    elf_inventories.into_iter().take(3).sum()
+    match part {
+        Part::One => elf_inventories.into_iter().max().expect(""),
+        Part::Two => {
+            elf_inventories.sort();
+            elf_inventories.reverse();
+            elf_inventories.into_iter().take(3).sum()
+        }
+    }
 }
