@@ -2,6 +2,7 @@ use std::{fmt::Display, time::Instant};
 
 mod day1;
 mod day2;
+mod day3;
 
 enum Part {
     One,
@@ -20,6 +21,7 @@ impl Display for Part {
 fn main() {
     run_fn("1", &day1::exec);
     run_fn("2", &day2::exec);
+    run_fn("3", &day3::exec);
 }
 
 fn run_fn<T>(day: &str, f: &dyn Fn(&Part) -> T)
