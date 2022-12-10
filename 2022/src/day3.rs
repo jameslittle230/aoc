@@ -65,6 +65,6 @@ mod tests {
     #[test]
     fn it_works() {
         assert_eq!(exec(&Part::One), 7746);
-        assert_eq!(exec(&Part::Two), 2604)
+        assert_eq!(exec(&Part::Two), 2604);
     }
 }
