@@ -4,6 +4,7 @@ mod day1;
 mod day2;
 mod day3;
 mod day4;
+mod day5;
 
 enum Part {
     One,
@@ -24,6 +25,7 @@ fn main() {
     run_fn("2", &day2::exec);
     run_fn("3", &day3::exec);
     run_fn("4", &day4::exec);
+    run_fn("5", &day5::exec);
 }
 
 fn run_fn<T>(day: &str, f: &dyn Fn(&Part) -> T)
